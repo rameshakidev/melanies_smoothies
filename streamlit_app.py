@@ -3,9 +3,6 @@ import streamlit as st
 import requests
 from snowflake.snowpark.functions import col
 
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
-#st.text(fruityvice_response)
-fv_df=st.dataframe(fruityvice_response.json(),use_container_width=True)
 
 # Write directly to the app
 st.title(":cup_with_straw: Customize Your Smoothie! :cup_with_straw:")
@@ -30,10 +27,11 @@ ingredients_list = st.multiselect(
 time_to_submit = st.button('Submit Order')
 
 if ingredients_list:
-    st.write('Select value is: ', ingredients_list)
     ingredients_string = ''
     for fruit in ingredients_list:
-        ingredients_string += fruit
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
+        fv_df=st.dataframe(fruityvice_response.json(),use_container_width=True)
+        ingredients_string += fruit + ' '
     st.write('You have chosen: ' + ingredients_string)
     my_insert_stmt = """insert into smoothies.public.orders 
                              (name_on_order, ingredients)
