@@ -16,7 +16,7 @@ st.write('Order name is: ', order_name)
 
 cnx = st.connection("snowflake")
 session = cnx.session()
-my_dataframe = session.table("smoothies.public.fruit_options").select(col('fruit_name'))
+my_dataframe = session.table("smoothies.public.fruit_options").select(col('fruit_name','search_on'))
 #st.dataframe(data=my_dataframe, use_container_width=True)
 
 ingredients_list = st.multiselect(
@@ -29,10 +29,10 @@ time_to_submit = st.button('Submit Order')
 if ingredients_list:
     ingredients_string = ''
     for fruit in ingredients_list:
-        st.subheader(fruit + ' Nutrition Information')
-        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit)
+        st.subheader(fruit:fruit_name + ' Nutrition Information')
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit:search_on)
         fv_df=st.dataframe(fruityvice_response.json(),use_container_width=True)
-        ingredients_string += fruit + ' '
+        ingredients_string += fruit:fruit_name + ' '
     st.write('You have chosen: ' + ingredients_string)
     my_insert_stmt = """insert into smoothies.public.orders 
                              (name_on_order, ingredients)
