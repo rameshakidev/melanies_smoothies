@@ -29,7 +29,8 @@ time_to_submit = st.button('Submit Order')
 if ingredients_list:
     ingredients_string = ''
     for fruit in ingredients_list:
-        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
+        st.subheader(fruit + ' Nutrition Information')
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit)
         fv_df=st.dataframe(fruityvice_response.json(),use_container_width=True)
         ingredients_string += fruit + ' '
     st.write('You have chosen: ' + ingredients_string)
